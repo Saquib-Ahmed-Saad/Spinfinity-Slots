@@ -9,9 +9,8 @@ An interactive, motion-first slot machine built using only HTML and CSS (no Java
 - Theme Toggle: Light/Dark via CSS variables and `prefers-color-scheme` with a pure CSS checkbox.
 
 ### UI Additions
-- Message Bar (CSS-only): Shows Ready → Spinning → Win → Lose based on `#spinToggle` and `#winToggle` state.
-- Win Mode (demo): A CSS-only toggle to preview a winning state and trigger glow/confetti after stop.
-- How To Play overlay: A modal-like info card toggled by a checkbox and label; no JS involved.
+- Message Bar (CSS-only): Shows  Spinning → Lose → Lose → Win based on two fail html pages and one win html page.
+- Click Stop to view results. Click Spin Again to try again.
 
 ## Stretch Goals
 - 3D Reel Illusion with `transform: rotateX()` and `perspective`.
@@ -70,6 +69,7 @@ An interactive, motion-first slot machine built using only HTML and CSS (no Java
 - Color and light/dark themes support context and comfort.
 - Everything is achievable with pure CSS, showcasing state-driven UI via simple HTML controls.
 >>>>>>> 316136c (feat: initial Spinfinity Slots HTML+CSS with separated animation.css; theme toggle, reels, overlays, confetti, and centered message bar)
+
 
 
 
