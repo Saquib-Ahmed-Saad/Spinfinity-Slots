@@ -20,18 +20,23 @@
 }
 
 @keyframes confetti-fall {
-  0%   { opacity: 0; transform: translateY(-10%) translateX(var(--tx)) rotate(var(--rot)) scaleX(var(--sx)); }
-  10%  { opacity: 1; }
-  100% { opacity: 0; transform: translateY(112%) translateX(calc(var(--tx) * .6)) rotate(var(--rot)) scaleX(var(--sx)); }
-}
-@keyframes confetti-rot {
-  0%   { transform: translateY(-10%) translateX(var(--tx)) rotate(0deg) scaleX(var(--sx)); }
-  100% { transform: translateY(112%) translateX(calc(var(--tx) * .6)) rotate(540deg) scaleX(var(--sx)); }
+  0% {
+    opacity: 1;
+    transform: translateX(calc(var(--tx, 0px) * 0)) translateY(0) rotate(var(--rot-start, 0deg)) scaleX(var(--sx, 1));
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(calc(var(--tx, 60px) * 1)) translateY(var(--ty, 120vh)) rotate(var(--rot-end, 720deg)) scaleX(var(--sx, 1));
+  }
 }
 
-@keyframes reel-sheen {
-  0% { transform: translateX(-30%); }
-  100% { transform: translateX(30%); }
+
+@keyframes confetti-rot {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(720deg); }
 }
 
 @keyframes lose-shake {

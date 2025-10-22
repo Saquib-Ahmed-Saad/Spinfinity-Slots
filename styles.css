@@ -117,6 +117,7 @@ body {
   padding: clamp(5rem, 2vw, 2rem);
   max-width: 1180px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .machine {
@@ -244,30 +245,6 @@ body {
   box-shadow: 0 0 0 2px var(--win), 0 0 36px rgba(130,255,158,0.65), 0 0 8px rgba(124,218,255,0.35) inset;
 }
 
-
-/* Confetti animation (stretch goal) */
-.confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 4; }
-.confetti .piece {
-  --x: 50%; --delay: 0s; --dur: 1.6s; --size: 8px; --hue: 200; --rot: 0deg; --tx: 0px; --sx: 1;
-  position: absolute;
-  top: -10%; left: var(--x);
-  width: var(--size); height: var(--size);
-  background: hsl(var(--hue) 95% 60%);
-  border-radius: 2px;
-  opacity: 0;
-  transform: translateX(var(--tx)) rotate(var(--rot)) scaleX(var(--sx));
-  animation: none;
-  will-change: transform, opacity;
-}
-/* Randomize via nth-child buckets */
-.confetti .piece:nth-child(5n+1) { --x: 8%;  --hue: 330; --size: 7px;  --tx: -12px; --rot: 40deg;  --sx: 1;   --dur: 1.7s; --delay: .05s; }
-.confetti .piece:nth-child(5n+2) { --x: 22%; --hue: 48;  --size: 9px;  --tx: -6px;  --rot: -30deg; --sx: -1;  --dur: 1.55s; --delay: .1s; }
-.confetti .piece:nth-child(5n+3) { --x: 42%; --hue: 200; --size: 6px;  --tx: 8px;   --rot: 20deg;  --sx: 1;   --dur: 1.65s; --delay: .15s; }
-.confetti .piece:nth-child(5n+4) { --x: 64%; --hue: 140; --size: 8px;  --tx: 10px;  --rot: -50deg; --sx: -1;  --dur: 1.5s;  --delay: .2s; }
-.confetti .piece:nth-child(5n+5) { --x: 86%; --hue: 265; --size: 10px; --tx: 2px;   --rot: 0deg;   --sx: 1;   --dur: 1.8s;  --delay: .25s; }
-/* Shape variety */
-.confetti .piece:nth-child(odd) { border-radius: 50%; }
-.confetti .piece:nth-child(3n) { width: calc(var(--size) * 1.4); height: calc(var(--size) * 0.6); }
 
 /* Keyframes and reduced-motion rules moved to animation.css */
 
