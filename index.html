@@ -9,8 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css" />
-  <link rel="stylesheet" href="./animation.css" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles1.css" />
+    <link rel="stylesheet" href="./animation.css" />
   </head>
   <body>
     <!-- Global theme switch (pure CSS). Placed before the page wrapper so we can scope variables via sibling selector. -->
@@ -19,143 +20,70 @@
     <a class="skip-link" href="#main">Skip to main content</a>
 
     <div class="page">
-    <header class="site-header" role="banner">
-      <h1 class="logo" aria-label="Spinfinity Slots">Spinfinity <span>Slots</span></h1>
-      <nav class="toolbar" aria-label="Toolbar">
-        <div class="theme-toggle" role="group" aria-label="Theme">
-          <!-- Pure CSS Theme toggle using :checked and CSS variables -->
-          <label for="themeSwitch" class="toggle">
-            <span class="sun" aria-hidden="true">☀️</span>
-            <span class="moon" aria-hidden="true">🌙</span>
-          </label>
-        </div>
-      </nav>
-    </header>
-
-    <main id="main" class="container" role="main">
-      <section class="machine" aria-labelledby="slotTitle">
-        <h2 id="slotTitle" class="sr-only">Slot Machine</h2>
-
-        <!-- Reel viewport and reels -->
-        <div class="reels" role="group" aria-label="Reels">
-          <!-- Use CSS animation-play-state toggled by a checkbox to simulate spin/stop without JS -->
-          <input type="checkbox" id="spinToggle" class="visually-hidden" aria-label="Spin reels" />
-
-          <div class="reel" aria-label="Reel 1">
-            <ul class="symbols">
-              <li>🍒</li>
-              <li>🍋</li>
-              <li>🔔</li>
-              <li>🍀</li>
-              <li>⭐</li>
-              <li>💎</li>
-              <li>7️⃣</li>
-              <li>🍇</li>
-              <li>🍒</li>
-              <li>🍋</li>
-            </ul>
+      <header class="site-header" role="banner">
+        <h1 class="logo" aria-label="Spinfinity Slots">Spinfinity <span>Slots</span></h1>
+        <nav class="toolbar" aria-label="Toolbar">
+          <div class="theme-toggle" role="group" aria-label="Theme">
+            <!-- Pure CSS Theme toggle using :checked and CSS variables -->
+            <label for="themeSwitch" class="toggle">
+              <span class="sun" aria-hidden="true">☀️</span>
+              <span class="moon" aria-hidden="true">🌙</span>
+            </label>
           </div>
+        </nav>
+      </header>
 
-          <div class="reel" aria-label="Reel 2">
-            <ul class="symbols">
-              <li>🍋</li>
-              <li>🍀</li>
-              <li>⭐</li>
-              <li>💎</li>
-              <li>7️⃣</li>
-              <li>🍇</li>
-              <li>🍒</li>
-              <li>🔔</li>
-              <li>🍋</li>
-              <li>🍀</li>
-            </ul>
-          </div>
-
-          <div class="reel" aria-label="Reel 3">
-            <ul class="symbols">
-              <li>⭐</li>
-              <li>💎</li>
-              <li>7️⃣</li>
-              <li>🍇</li>
-              <li>🍒</li>
-              <li>🔔</li>
-              <li>🍋</li>
-              <li>🍀</li>
-              <li>⭐</li>
-              <li>💎</li>
-            </ul>
-          </div>
-
-          <div class="controls">
-            <label for="spinToggle" class="spin-button" role="button" aria-pressed="false">Spin / Stop</label>
+      <main id="main" class="container" role="main">
+        <section class="intro" aria-labelledby="introTitle">
+          <h2 id="introTitle">Welcome to Spinfinity Slots</h2>
+          <p>A pure CSS slot machine demo. Click below to learn how to play or start trying!</p>
+          <div class="intro-links">
             <label for="howtoToggle" class="info-toggle" aria-label="Open How To Play">How to Play</label>
             <label for="aboutToggle" class="about-toggle" aria-label="Open About">About</label>
+            <a href="try1.html" class="try-link">Try the Slots</a>
           </div>
-          <!-- Win line highlight overlay (moved inside .reels for sibling selectors) -->
-          <div class="win-line" aria-hidden="true"></div>
+        </section>
 
-          <!-- Confetti container (real particles) -->
-          <div class="confetti" aria-hidden="true">
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-          </div>
-          <!-- Message Bar (moved inside .reels so sibling selectors work) -->
-          <div class="message-bar" role="status" aria-live="polite">
-            <p class="msg msg-default">Ready to spin!</p>
-            <p class="msg msg-spinning">Spinning…</p>
-            <p class="msg msg-win">You win! 🎉</p>
-            <p class="msg msg-lose">Better luck next time!</p>
+        <!-- How To Play / Info overlay (CSS-only modal) -->
+        <input type="checkbox" id="howtoToggle" class="visually-hidden" aria-label="Toggle how to play" />
+        <div class="howto-overlay" role="dialog" aria-modal="true" aria-labelledby="howtoTitle">
+          <div class="howto-card">
+            <h2 id="howtoTitle">How To Play</h2>
+            <p>Navigate to the try pages to experience the rigged sequence: lose → lose → win. Each page has a fixed outcome. Use the Spin / Stop button to play.</p>
+            <h3>Techniques used</h3>
+            <ul>
+              <li>CSS Grid and Flexbox for responsive layout</li>
+              <li>@keyframes for reel spin, stop, glow, and confetti</li>
+              <li>transform: translateY, rotateX, scale for motion & feedback</li>
+              <li>Theme toggle via CSS variables and prefers-color-scheme</li>
+              <li>Reduced motion support via prefers-reduced-motion</li>
+            </ul>
+            <label for="howtoToggle" class="close-overlay" aria-label="Close">Close</label>
           </div>
         </div>
-  </section>
 
-      <!-- How To Play / Info overlay (CSS-only modal) -->
-      <input type="checkbox" id="howtoToggle" class="visually-hidden" aria-label="Toggle how to play" />
-      <div class="howto-overlay" role="dialog" aria-modal="true" aria-labelledby="howtoTitle">
-        <div class="howto-card">
-          <h2 id="howtoTitle">How To Play</h2>
-          <p>Press "Spin / Stop" to start the reels. Reels blur and tilt while spinning. They stop in sequence. Toggle "Win Mode" to preview a winning highlight and confetti effect.</p>
-          <h3>Techniques used</h3>
-          <ul>
-            <li>CSS Grid and Flexbox for responsive layout</li>
-            <li>@keyframes for reel spin, stop, glow, and confetti</li>
-            <li>transform: translateY, rotateX, scale for motion & feedback</li>
-            <li>Theme toggle via CSS variables and prefers-color-scheme</li>
-            <li>Reduced motion support via prefers-reduced-motion</li>
-          </ul>
-          <label for="howtoToggle" class="close-overlay" aria-label="Close">Close</label>
+        <!-- About overlay (CSS-only modal) -->
+        <input type="checkbox" id="aboutToggle" class="visually-hidden" aria-label="Toggle about" />
+        <div class="howto-overlay" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+          <div class="howto-card">
+            <h2 id="aboutTitle">About Spinfinity Slots</h2>
+            <p>Built with pure HTML + CSS. Demonstrates transforms, transitions, and keyframes for motion-first UI. No JavaScript is used for interactions.</p>
+            <ul>
+              <li>CSS Grid/Flexbox responsive layout</li>
+              <li>Reel spin/stop with staggered timing</li>
+              <li>Theme toggle with CSS variables</li>
+              <li>Confetti and win-line effects</li>
+            </ul>
+            <label for="aboutToggle" class="close-overlay" aria-label="Close">Close</label>
+          </div>
         </div>
-      </div>
+      </main>
 
-      <!-- About overlay (CSS-only modal) -->
-      <input type="checkbox" id="aboutToggle" class="visually-hidden" aria-label="Toggle about" />
-      <div class="howto-overlay" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
-        <div class="howto-card">
-          <h2 id="aboutTitle">About Spinfinity Slots</h2>
-          <p>Built with pure HTML + CSS. Demonstrates transforms, transitions, and keyframes for motion-first UI. No JavaScript is used for interactions.</p>
-          <ul>
-            <li>CSS Grid/Flexbox responsive layout</li>
-            <li>Reel spin/stop with staggered timing</li>
-            <li>Theme toggle with CSS variables</li>
-            <li>Confetti and win-line effects</li>
-          </ul>
-          <label for="aboutToggle" class="close-overlay" aria-label="Close">Close</label>
-        </div>
-      </div>
-    </main>
-
-    <footer class="site-footer" role="contentinfo">
-      <p>
-        Built for Motion-First UI assignment. No JavaScript used.
-      </p>
-    </footer>
+      <footer class="site-footer" role="contentinfo">
+        <p>
+          Built for Motion-First UI assignment. No JavaScript used.
+        </p>
+      </footer>
     </div>
   </body>
 </html>
-

@@ -1,0 +1,23 @@
+/* Rigged for attempt 3: Win */
+.reel:nth-of-type(1) { --stop-y: -70%; }  /* 🍒 (pos1) in middle */
+.reel:nth-of-type(2) { --stop-y: -50%; } /* 🍒 (pos7) in middle */
+.reel:nth-of-type(3) { --stop-y: -30%; } /* 🍒 (pos5) in middle */
+
+/* Messages */
+#spinToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 1; transform: none; display: block; z-index: 1; }
+#spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-win { 
+  opacity: 1; 
+  display: block; 
+  animation: show-win 0.8s ease-in forwards; 
+}
+
+/* Win effects */
+#spinToggle:checked ~ .win-line {
+  animation: win-flash var(--win-pulse) ease-in-out 8 alternate;
+  box-shadow: 0 0 0 2px var(--win), 0 0 36px rgba(130,255,158,0.65), 0 0 8px rgba(124,218,255,0.35) inset;
+}
+#spinToggle:checked ~ .confetti .piece {
+  opacity: 1;
+  animation: confetti-fall var(--dur) cubic-bezier(.25,.6,.2,1) var(--delay) 1 both,
+             confetti-rot var(--dur) linear var(--delay) 1 both;
+}
