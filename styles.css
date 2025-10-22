@@ -14,7 +14,7 @@
   --glow: 0 0 1.25rem rgba(124, 218, 255, 0.45);
 
   /* Motion tokens */
-  --reel-speed: 0.8s; /* base spinning speed (updated for faster spin) */
+  --reel-speed: 0.2s; /* base spinning speed (updated for faster spin) */
   --reel-delay: 0.22s; /* stagger gap */
   --win-pulse: 0.6s; /* win-line pulse */
   --easing-snap: cubic-bezier(0.22, 1, 0.36, 1);
@@ -75,16 +75,6 @@ body {
   transition: background-color .3s ease, color .2s ease;
 }
 
-.skip-link {
-  position: absolute;
-  left: -999px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-.skip-link:focus { left: 1rem; top: 1rem; width: auto; height: auto; padding: .5rem .75rem; background: var(--surface); border-radius: 8px; box-shadow: var(--glow); }
-
 .visually-hidden { position: absolute !important; clip: rect(1px, 1px, 1px, 1px); padding: 0 !important; border: 0 !important; height: 1px !important; width: 1px !important; overflow: hidden; }
 .sr-only { position: absolute; left: -9999px; }
 
@@ -94,10 +84,9 @@ body {
   align-items: center;
   gap: 1rem;
   padding: var(--pad-lg);
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.site-footer { grid-template-columns: 1fr; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: none; margin-top: 2rem; }
+
+.site-footer { grid-template-columns: 1fr; text-align: center;  border-bottom: none; margin-top: 2rem; }
 .logo {
   font-family: Kanit, system-ui, sans-serif;
   font-weight: 800;
@@ -148,17 +137,23 @@ body {
   padding: .5rem; /* inner breathing room around overlays */
 }
 
-/* Removed payline band from the reels to avoid covering symbols */
-.reels::before { content: none; }
 
-.controls { grid-column: 1 / -1; display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; position: relative; isolation: isolate; padding: .6rem; }
-.controls::before {
-  content: ""; position: absolute; inset: 0;
-  border-radius: calc(var(--radius) - 4px);
-  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 6px 20px rgba(0,0,0,0.25);
-  z-index: 0; pointer-events: none;
+.controls { 
+  grid-column: 1 / -1; 
+  justify-self: center;
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  border-radius: var(--radius);
+  padding: .75rem 1rem;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.06);
+  width: 450px; /* Fixed width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50px;
+  position: relative; 
+  isolation: isolate; 
 }
+
 .controls > * { position: relative; z-index: 1; }
 
 /* Spin button styled as label to #spinToggle */
@@ -182,8 +177,6 @@ body {
 .spin-button:hover { transform: translateY(-1px); filter: brightness(1.05); }
 .spin-button:active { transform: translateY(1px) scale(0.98); }
 #spinToggle:checked ~ .reel::before { animation: reel-sheen 1.5s ease-in-out 1; }
-
-.win-toggle { display: none; }
 
 /* Reel viewport */
 .reel {
@@ -233,22 +226,24 @@ body {
   transition: transform .25s var(--easing-snap), filter .2s ease;
 }
 
+.machine { position: relative; }
+
 /* Win-line highlight: flashes when stopped */
 .win-line {
-  position: absolute; inset: 0; pointer-events: none;
-  border: 2px solid transparent; border-radius: var(--radius-lg);
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* Panel */
-.panel {
-  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+.reels:has(#spinToggle:checked) ~ .win-line {
+  animation: win-flash var(--win-pulse) ease-in-out 8 alternate;
+  opacity: 1;
   border-radius: var(--radius-lg);
-  padding: var(--pad-lg);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.06);
+  box-shadow: 0 0 0 2px var(--win), 0 0 36px rgba(130,255,158,0.65), 0 0 8px rgba(124,218,255,0.35) inset;
 }
-.panel h2 { margin-top: 0; font-family: Kanit, system-ui, sans-serif; }
-.panel .features { columns: 2; gap: 1rem; padding-left: 1rem; }
-@media (max-width: 520px) { .panel .features { columns: 1; } }
+
 
 /* Confetti animation (stretch goal) */
 .confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 4; }
@@ -280,19 +275,18 @@ body {
   4) Message Bar & Overlay
 ====================*/
 .message-bar {
-  margin-top: 1rem;
-  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  margin: 0;
   border-radius: var(--radius);
-  padding: .75rem 1rem;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.06);
-  min-height: 2.5rem;
+  padding: 0; /* Remove padding since .controls has it */
+  box-shadow: none; /* Remove shadow since .controls has it */
+  min-height: auto;
   z-index: 5;
-  display: grid; align-items: center;
-  /* Center the bar under the controls in the middle */
-  grid-column: 1 / -1;
-  justify-self: center;
-  width: clamp(220px, 40vw, 380px);
+  display: grid; 
+  align-items: center;
+  width: 100%; /* Fill .controls width */
+  background: transparent; /* No background, uses .controls */
 }
+
 .message-bar .msg { 
   margin: 0; 
   opacity: 0; 
@@ -373,61 +367,6 @@ body {
   to { opacity: 1; }
 }
 
-#attempt1:checked ~ .page .reel:nth-of-type(1) { --stop-y: -40%; } /* Lose: pos5 🍒 */
-#attempt1:checked ~ .page .reel:nth-of-type(2) { --stop-y: -40%; } /* Lose: pos5 💎 */
-#attempt1:checked ~ .page .reel:nth-of-type(3) { --stop-y: -40%; } /* Lose: pos5 🍒 */
-
-#attempt2:checked ~ .page .reel:nth-of-type(1) { --stop-y: -20%; } /* Lose: pos3 🔔 */
-#attempt2:checked ~ .page .reel:nth-of-type(2) { --stop-y: -20%; } /* Lose: pos3 ⭐ */
-#attempt2:checked ~ .page .reel:nth-of-type(3) { --stop-y: -20%; } /* Lose: pos3 7️⃣ */
-
-#attempt3:checked ~ .page .reel:nth-of-type(1) { --stop-y: 0%; }   /* Win: pos1 🍒 */
-#attempt3:checked ~ .page .reel:nth-of-type(2) { --stop-y: -60%; } /* Win: pos7 🍒 */
-#attempt3:checked ~ .page .reel:nth-of-type(3) { --stop-y: -40%; } /* Win: pos5 🍒 */
-
-/* Message visibility based on spin + attempt (lose for 1/2, win for 3) */
-#attempt1:checked ~ .page .reels #spinToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 1; transform: none; display: block; z-index: 1; }
-#attempt1:checked ~ .page .reels #spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-lose { opacity: 1; transform: none; display: block; z-index: 1; }
-
-#attempt2:checked ~ .page .reels #spinToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 1; transform: none; display: block; z-index: 1; }
-#attempt2:checked ~ .page .reels #spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-lose2 { opacity: 1; transform: none; display: block; z-index: 1; }
-
-#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .win-line,
-#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .confetti .piece,
-#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .message-bar .msg-spinning,
-#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .message-bar .msg-win {
-  opacity: 0;
-  display: none;
-  animation: none;
-  box-shadow: none;
-}
-
-/* --- Show spinning message while reels spin --- */
-#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .message-bar .msg-spinning {
-  opacity: 1;
-  display: block;
-  transform: none;
-}
-
-/* --- Show win effects only after spinToggle is checked --- */
-#attempt3:checked ~ .page .reels #spinToggle:checked ~ .win-line {
-  animation: win-flash var(--win-pulse) ease-in-out 8 alternate;
-  animation-delay: 0.8s;
-  box-shadow: 0 0 0 2px var(--win), 0 0 36px rgba(130,255,158,0.65), 0 0 8px rgba(124,218,255,0.35) inset;
-}
-
-#attempt3:checked ~ .page .reels #spinToggle:checked ~ .confetti .piece {
-  opacity: 1;
-  animation: confetti-fall var(--dur) cubic-bezier(.25,.6,.2,1) var(--delay) 1 both,
-             confetti-rot var(--dur) linear var(--delay) 1 both;
-  animation-delay: 0.8s;
-}
-
-#attempt3:checked ~ .page .reels #spinToggle:checked ~ .message-bar .msg-win { 
-  opacity: 1; /* Reveal after spin */
-  display: block;
-  animation: show-win 0.8s ease-in forwards;
-}
 
 /* Style try-again/play-again buttons */
 .try-again, .play-again {
@@ -440,6 +379,27 @@ body {
   cursor: pointer;
   font-size: 0.9rem;
 }
+
+.play-again {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  font-weight: 700;
+  letter-spacing: .5px;
+  padding: .75rem 1.25rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(124,218,255,0.35);
+  transition: transform .2s var(--easing-snap), filter .2s;
+  user-select: none;
+  min-height: 42px;
+  line-height: 1;
+  margin-left: 0.5rem;
+  text-decoration: none; /* Since it's a link */
+}
+
+.play-again:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.play-again:active { transform: translateY(1px) scale(0.98); }
 
 #spinToggle:checked ~ .controls .spin-button { display: none; }
 

@@ -14,26 +14,12 @@
   <link rel="stylesheet" href="./animation.css" />
   </head>
   <body>
-    <!-- Global theme switch (pure CSS). Placed before the page wrapper so we can scope variables via sibling selector. -->
-    <input type="checkbox" id="themeSwitch" class="visually-hidden" aria-label="Toggle dark/light theme" />
-
-    <a class="skip-link" href="#main">Skip to main content</a>
-
     <div class="page">
     <header class="site-header" role="banner">
       <div class="back-home">
         <a href="index.html" class="back-link">Back to Home</a>
     </div>
       <h1 class="logo" aria-label="Spinfinity Slots">Spinfinity <span>Slots</span></h1>
-      <nav class="toolbar" aria-label="Toolbar">
-        <div class="theme-toggle" role="group" aria-label="Theme">
-          <!-- Pure CSS Theme toggle using :checked and CSS variables -->
-          <label for="themeSwitch" class="toggle">
-            <span class="sun" aria-hidden="true">☀️</span>
-            <span class="moon" aria-hidden="true">🌙</span>
-          </label>
-        </div>
-      </nav>
     </header>
 
     <main id="main" class="container" role="main">
@@ -92,26 +78,12 @@
 
           <div class="controls">
             <label for="spinToggle" class="spin-button" role="button" aria-pressed="false">Stop</label>
-          </div>
-          <!-- Win line highlight overlay (moved inside .reels for sibling selectors) -->
-          <div class="win-line" aria-hidden="true"></div>
-
-          <!-- Confetti container (real particles) -->
-          <div class="confetti" aria-hidden="true">
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-            <span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span><span class="piece"></span>
-          </div>
-          <div class="message-bar" role="status" aria-live="polite">
-            <p class="msg msg-default">Ready to spin!</p>
-            <p class="msg msg-spinning">Spinning…</p>
-            <p class="msg msg-lose2">Better luck next time! <a href="try3.html" class="spin-again">Spin Again</a></p>
+            <div class="message-bar" role="status" aria-live="polite">
+              <p class="msg msg-default">Ready to spin!</p>
+              <p class="msg msg-spinning">Spinning…</p>
+              <p class="msg msg-lose">Better luck next time! <a href="try3.html" class="spin-again">Spin Again</a></p>
             </div>
+          </div>
         </div>
   </section>
     </main>

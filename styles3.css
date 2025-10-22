@@ -4,8 +4,8 @@
 .reel:nth-of-type(3) { --stop-y: -30%; } /* 🍒 (pos5) in middle */
 
 /* Messages */
-#spinToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 1; transform: none; display: block; z-index: 1; }
-#spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-win { 
+#spinToggle:not(:checked) ~ .controls .message-bar .msg-spinning { opacity: 1; transform: none; display: block; z-index: 1; }
+#spinToggle:checked ~ .controls .message-bar .msg-win { 
   opacity: 1; 
   display: block; 
   animation: show-win 0.8s ease-in forwards; 

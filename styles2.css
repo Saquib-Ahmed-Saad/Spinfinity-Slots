@@ -4,5 +4,5 @@
 .reel:nth-of-type(3) { --stop-y: -20%; }
 
 /* Messages */
-#spinToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 1; transform: none; display: block; z-index: 1; }
-#spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-lose2 { opacity: 1; transform: none; display: block; z-index: 1; }
+#spinToggle:not(:checked) ~ .controls .message-bar .msg-spinning { opacity: 1; transform: none; display: block; z-index: 1; }
+#spinToggle:checked ~ .controls .message-bar .msg-lose { opacity: 1; transform: none; display: block; z-index: 1; }
