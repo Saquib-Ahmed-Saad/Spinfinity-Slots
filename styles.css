@@ -14,7 +14,7 @@
   --glow: 0 0 1.25rem rgba(124, 218, 255, 0.45);
 
   /* Motion tokens */
-  --reel-speed: 1.2s; /* base spinning speed */
+  --reel-speed: 0.8s; /* base spinning speed (updated for faster spin) */
   --reel-delay: 0.22s; /* stagger gap */
   --win-pulse: 0.6s; /* win-line pulse */
   --easing-snap: cubic-bezier(0.22, 1, 0.36, 1);
@@ -160,15 +160,6 @@ body {
   z-index: 0; pointer-events: none;
 }
 .controls > * { position: relative; z-index: 1; }
-.win-toggle, .info-toggle, .about-toggle {
-  background: linear-gradient(135deg, var(--surface-2), var(--surface));
-  color: var(--text);
-  padding: .55rem .9rem; border-radius: 999px; cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: transform .2s var(--easing-snap), background .25s ease;
-  display: inline-flex; align-items: center; justify-content: center; line-height: 1; min-height: 36px;
-}
-.win-toggle:hover, .info-toggle:hover, .about-toggle:hover { transform: translateY(-1px) scale(1.02); }
 
 /* Spin button styled as label to #spinToggle */
 .spin-button {
@@ -183,9 +174,16 @@ body {
   user-select: none;
   display: inline-flex; align-items: center; justify-content: center; min-height: 42px; line-height: 1;
 }
+
+
 #spinToggle:checked ~ .spin-button { filter: brightness(0.95) saturate(1.05); }
+#spinToggle:checked ~ .reel:nth-of-type(2) .symbols { animation-delay: var(--reel-delay); }
+#spinToggle:checked ~ .reel:nth-of-type(3) .symbols { animation-delay: calc(var(--reel-delay) * 2); }
 .spin-button:hover { transform: translateY(-1px); filter: brightness(1.05); }
 .spin-button:active { transform: translateY(1px) scale(0.98); }
+#spinToggle:checked ~ .reel::before { animation: reel-sheen 1.5s ease-in-out 1; }
+
+.win-toggle { display: none; }
 
 /* Reel viewport */
 .reel {
@@ -222,6 +220,10 @@ body {
   position: relative; z-index: 0;
 }
 
+/* Toggle animation between spin and stop based on #spinToggle */
+#spinToggle:not(:checked) ~ .reel .symbols { animation: reel-spin var(--reel-speed) linear infinite; }
+#spinToggle:checked ~ .reel .symbols { animation: reel-stop var(--reel-speed) ease-out 1 forwards; }
+
 /* Individual symbol styling */
 .symbols li {
   display: grid; place-items: center;
@@ -231,43 +233,10 @@ body {
   transition: transform .25s var(--easing-snap), filter .2s ease;
 }
 
-/* 3D reel illusion: gently tilt while spinning */
-.reel .symbols { transform-origin: 50% 50%; }
-
-/* Blur during spin (stretch goal): When spinning, apply blur; when stopped, remove */
-.reels #spinToggle:not(:checked) ~ .reel .symbols { filter: blur(1.2px) saturate(1.05); }
-.reels #spinToggle:checked ~ .reel .symbols { filter: none; }
-
-/* Sheen on reels only while spinning */
-.reels #spinToggle:not(:checked) ~ .reel::before { animation: reel-sheen 1.2s linear infinite; opacity: .33; }
-.reels #spinToggle:checked ~ .reel::before { animation: none; opacity: .18; }
-
-/* Staggered stop: when unchecked, reels spin; when checked, we transition to a stop with delays */
-/* Identify reels using nth-of-type because .reel siblings include a label after them */
-.reel:nth-of-type(1) { --spin: 1.15s; }
-.reel:nth-of-type(2) { --spin: 1.05s; }
-.reel:nth-of-type(3) { --spin: 1.12s; }
-.reel:nth-of-type(1) { --stop-y: -40%; }
-.reel:nth-of-type(2) { --stop-y: -20%; } 
-.reel:nth-of-type(3) { --stop-y: 0%; }
-.reels #spinToggle:not(:checked) ~ .reel:nth-of-type(1) .symbols { animation: reel-spin var(--spin, var(--reel-speed)) linear infinite; }
-.reels #spinToggle:not(:checked) ~ .reel:nth-of-type(2) .symbols { animation: reel-spin var(--spin, var(--reel-speed)) linear infinite; }
-.reels #spinToggle:not(:checked) ~ .reel:nth-of-type(3) .symbols { animation: reel-spin var(--spin, var(--reel-speed)) linear infinite; }
-
-/* On stop: play a one-shot stop animation with increasing delays */
-.reels #spinToggle:checked ~ .reel:nth-of-type(1) .symbols { animation: reel-stop var(--reel-speed) cubic-bezier(.15, .9, .23, 1) 1 forwards; animation-delay: calc(var(--reel-delay) * 0); }
-.reels #spinToggle:checked ~ .reel:nth-of-type(2) .symbols { animation: reel-stop var(--reel-speed) cubic-bezier(.15, .9, .23, 1) 1 forwards; animation-delay: calc(var(--reel-delay) * 1); }
-.reels #spinToggle:checked ~ .reel:nth-of-type(3) .symbols { animation: reel-stop var(--reel-speed) cubic-bezier(.15, .9, .23, 1) 1 forwards; animation-delay: calc(var(--reel-delay) * 2); }
-
 /* Win-line highlight: flashes when stopped */
 .win-line {
   position: absolute; inset: 0; pointer-events: none;
   border: 2px solid transparent; border-radius: var(--radius-lg);
-}
-/* Win animation shows only when stopped AND Win Mode is on */
-.reels #spinToggle:checked ~ #winToggle:checked ~ .win-line {
-  animation: win-flash var(--win-pulse) ease-in-out 8 alternate;
-  box-shadow: 0 0 0 2px var(--win), 0 0 36px rgba(130,255,158,0.65), 0 0 8px rgba(124,218,255,0.35) inset;
 }
 
 /* Panel */
@@ -305,13 +274,6 @@ body {
 .confetti .piece:nth-child(odd) { border-radius: 50%; }
 .confetti .piece:nth-child(3n) { width: calc(var(--size) * 1.4); height: calc(var(--size) * 0.6); }
 
-/* Trigger confetti pieces only when stopped + win (assign animation on demand) */
-.reels #spinToggle:checked ~ #winToggle:checked ~ .confetti .piece {
-  opacity: 1;
-  animation: confetti-fall var(--dur) cubic-bezier(.25,.6,.2,1) var(--delay) 1 both,
-             confetti-rot var(--dur) linear var(--delay) 1 both;
-}
-
 /* Keyframes and reduced-motion rules moved to animation.css */
 
 /*====================
@@ -331,30 +293,70 @@ body {
   justify-self: center;
   width: clamp(220px, 40vw, 380px);
 }
-.message-bar .msg { margin: 0; opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s var(--easing-snap); position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+.message-bar .msg { 
+  margin: 0; 
+  opacity: 0; 
+  transform: translateY(6px); 
+  transition: opacity .25s ease, transform .25s var(--easing-snap); 
+  position: relative; 
+  display: none; 
+  text-align: center; 
+}
 .message-bar { position: relative; }
 
 /* Default state */
-.msg-default { opacity: 1; transform: none; }
+.msg-default { opacity: 1; transform: none; display: block; }
 
-/* When spinning: show spinning message */
-.reels #spinToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-default { opacity: 0; }
-.reels #spinToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 1; transform: translateY(0); }
+.intro {
+  text-align: center;
+  padding: 2rem;
+}
 
-/* When stopped + win */
-.reels #spinToggle:checked ~ #winToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 0; }
-.reels #spinToggle:checked ~ #winToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-win { opacity: 1; transform: translateY(0); }
+.intro-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-/* When stopped + not win */
-.reels #spinToggle:checked ~ #winToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 0; }
-.reels #spinToggle:checked ~ #winToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-lose { opacity: 1; transform: translateY(0); animation: text-shimmer 1.6s ease .1s 1 both; }
-/* Make the lose message slightly larger and bolder */
-.message-bar .msg-lose { font-size: 1.1rem; font-weight: 700; }
-/* Give the bar a touch more height when showing the lose state */
-.reels #spinToggle:checked ~ #winToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar { min-height: 3rem; padding: .85rem 1.1rem; }
-/* Lose feedback motion */
-.reels #spinToggle:checked ~ #winToggle:not(:checked) ~ .reel { animation: lose-shake .45s ease-in-out 1; }
-.reels #spinToggle:checked ~ #winToggle:not(:checked) ~ .controls .spin-button { animation: attention-bounce .6s var(--easing-snap) .2s 1 both; }
+.info-toggle, .about-toggle, .try-link {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(124,218,255,0.25);
+  transition: transform 0.2s ease;
+  text-decoration: none; /* For .try-link */
+}
+
+.info-toggle:hover, .about-toggle:hover, .try-link:hover {
+  transform: scale(1.05);
+}
+
+.back-home {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.back-link {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(124,218,255,0.25);
+  transition: transform 0.2s ease;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  transform: scale(1.05);
+}
+
 
 /* Overlay (How To Play) */
 .howto-overlay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,0.4); opacity: 0; pointer-events: none; transition: opacity .25s ease; z-index: 100; }
@@ -365,21 +367,76 @@ body {
 .howto-card h2 { margin-top: 0; font-family: Kanit, system-ui, sans-serif; }
 .close-overlay { display: inline-block; margin-top: .75rem; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: white; padding: .6rem 1rem; border-radius: 999px; cursor: pointer; box-shadow: 0 10px 24px rgba(124,218,255,0.25); }
 
-/* Auto-trigger win effects when stopped (remove dependency on #winToggle) */
-.reels #spinToggle:checked ~ .win-line {
+/* Slot Machine Logic */
+
+@keyframes show-win {
+  to { opacity: 1; }
+}
+
+#attempt1:checked ~ .page .reel:nth-of-type(1) { --stop-y: -40%; } /* Lose: pos5 🍒 */
+#attempt1:checked ~ .page .reel:nth-of-type(2) { --stop-y: -40%; } /* Lose: pos5 💎 */
+#attempt1:checked ~ .page .reel:nth-of-type(3) { --stop-y: -40%; } /* Lose: pos5 🍒 */
+
+#attempt2:checked ~ .page .reel:nth-of-type(1) { --stop-y: -20%; } /* Lose: pos3 🔔 */
+#attempt2:checked ~ .page .reel:nth-of-type(2) { --stop-y: -20%; } /* Lose: pos3 ⭐ */
+#attempt2:checked ~ .page .reel:nth-of-type(3) { --stop-y: -20%; } /* Lose: pos3 7️⃣ */
+
+#attempt3:checked ~ .page .reel:nth-of-type(1) { --stop-y: 0%; }   /* Win: pos1 🍒 */
+#attempt3:checked ~ .page .reel:nth-of-type(2) { --stop-y: -60%; } /* Win: pos7 🍒 */
+#attempt3:checked ~ .page .reel:nth-of-type(3) { --stop-y: -40%; } /* Win: pos5 🍒 */
+
+/* Message visibility based on spin + attempt (lose for 1/2, win for 3) */
+#attempt1:checked ~ .page .reels #spinToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 1; transform: none; display: block; z-index: 1; }
+#attempt1:checked ~ .page .reels #spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-lose { opacity: 1; transform: none; display: block; z-index: 1; }
+
+#attempt2:checked ~ .page .reels #spinToggle:not(:checked) ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 1; transform: none; display: block; z-index: 1; }
+#attempt2:checked ~ .page .reels #spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-lose2 { opacity: 1; transform: none; display: block; z-index: 1; }
+
+#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .win-line,
+#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .confetti .piece,
+#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .message-bar .msg-spinning,
+#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .message-bar .msg-win {
+  opacity: 0;
+  display: none;
+  animation: none;
+  box-shadow: none;
+}
+
+/* --- Show spinning message while reels spin --- */
+#attempt3:checked ~ .page .reels #spinToggle:not(:checked) ~ .message-bar .msg-spinning {
+  opacity: 1;
+  display: block;
+  transform: none;
+}
+
+/* --- Show win effects only after spinToggle is checked --- */
+#attempt3:checked ~ .page .reels #spinToggle:checked ~ .win-line {
   animation: win-flash var(--win-pulse) ease-in-out 8 alternate;
+  animation-delay: 0.8s;
   box-shadow: 0 0 0 2px var(--win), 0 0 36px rgba(130,255,158,0.65), 0 0 8px rgba(124,218,255,0.35) inset;
 }
 
-.reels #spinToggle:checked ~ .confetti .piece {
+#attempt3:checked ~ .page .reels #spinToggle:checked ~ .confetti .piece {
   opacity: 1;
   animation: confetti-fall var(--dur) cubic-bezier(.25,.6,.2,1) var(--delay) 1 both,
-  confetti-rot var(--dur) linear var(--delay) 1 both;
+             confetti-rot var(--dur) linear var(--delay) 1 both;
+  animation-delay: 0.8s;
 }
 
-/* Update message logic to show "You win!" on stop (remove #winToggle checks) */
-.reels #spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 0; }
-.reels #spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-win { opacity: 1; transform: translateY(0); }
+#attempt3:checked ~ .page .reels #spinToggle:checked ~ .message-bar .msg-win { 
+  opacity: 1; /* Reveal after spin */
+  display: block;
+  animation: show-win 0.8s ease-in forwards;
+}
 
-/* Optional: Hide the "Win Mode" toggle since it's no longer needed */
-.win-toggle { display: none; }
+/* Style try-again/play-again buttons */
+.try-again, .play-again {
+  display: inline-block;
+  margin-left: 0.5rem;
+  background: var(--accent);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
