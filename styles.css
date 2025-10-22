@@ -114,7 +114,7 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
-  padding: clamp(1rem, 2vw, 2rem);
+  padding: clamp(5rem, 2vw, 2rem);
   max-width: 1180px;
   margin: 0 auto;
 }
