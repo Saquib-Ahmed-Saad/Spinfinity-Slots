@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# Spinfinity-Slots
-A web-based slot machine game built for CSC 4370; featuring animated reels, accessibility-friendly themes, and responsive design.
-=======
 # Spinfinity Slots — Pure CSS Motion UI
 
 An interactive, motion-first slot machine built using only HTML and CSS (no JavaScript). Demonstrates transforms, transitions, and keyframe animations with responsive layout, theme toggle, and accessibility considerations.
@@ -73,4 +69,5 @@ An interactive, motion-first slot machine built using only HTML and CSS (no Java
 - Color and light/dark themes support context and comfort.
 - Everything is achievable with pure CSS, showcasing state-driven UI via simple HTML controls.
 >>>>>>> 316136c (feat: initial Spinfinity Slots HTML+CSS with separated animation.css; theme toggle, reels, overlays, confetti, and centered message bar)
+
 
