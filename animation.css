@@ -9,9 +9,9 @@
 }
 
 @keyframes reel-stop {
-  0%   { transform: translateY(-34%) rotateX(10deg); filter: blur(1px); }
-  85%  { transform: translateY(-39%) rotateX(2deg); }
-  100% { transform: translateY(-40%) rotateX(0deg); filter: none; }
+  0%   { transform: translateY(calc(var(--stop-y) + 6%)) rotateX(10deg); filter: blur(1px); }
+  85%  { transform: translateY(calc(var(--stop-y) + 1%)) rotateX(2deg); }
+  100% { transform: translateY(var(--stop-y)) rotateX(0deg); filter: none; }
 }
 
 @keyframes win-flash {

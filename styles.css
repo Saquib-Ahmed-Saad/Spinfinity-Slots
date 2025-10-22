@@ -247,6 +247,9 @@ body {
 .reel:nth-of-type(1) { --spin: 1.15s; }
 .reel:nth-of-type(2) { --spin: 1.05s; }
 .reel:nth-of-type(3) { --spin: 1.12s; }
+.reel:nth-of-type(1) { --stop-y: -40%; }
+.reel:nth-of-type(2) { --stop-y: -20%; } 
+.reel:nth-of-type(3) { --stop-y: 0%; }
 .reels #spinToggle:not(:checked) ~ .reel:nth-of-type(1) .symbols { animation: reel-spin var(--spin, var(--reel-speed)) linear infinite; }
 .reels #spinToggle:not(:checked) ~ .reel:nth-of-type(2) .symbols { animation: reel-spin var(--spin, var(--reel-speed)) linear infinite; }
 .reels #spinToggle:not(:checked) ~ .reel:nth-of-type(3) .symbols { animation: reel-spin var(--spin, var(--reel-speed)) linear infinite; }
@@ -361,3 +364,22 @@ body {
 .howto-card { width: min(680px, 92vw); background: linear-gradient(180deg, var(--surface), var(--surface-2)); color: var(--text); border-radius: 18px; padding: 1.25rem; box-shadow: 0 20px 40px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(255,255,255,0.06); }
 .howto-card h2 { margin-top: 0; font-family: Kanit, system-ui, sans-serif; }
 .close-overlay { display: inline-block; margin-top: .75rem; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: white; padding: .6rem 1rem; border-radius: 999px; cursor: pointer; box-shadow: 0 10px 24px rgba(124,218,255,0.25); }
+
+/* Auto-trigger win effects when stopped (remove dependency on #winToggle) */
+.reels #spinToggle:checked ~ .win-line {
+  animation: win-flash var(--win-pulse) ease-in-out 8 alternate;
+  box-shadow: 0 0 0 2px var(--win), 0 0 36px rgba(130,255,158,0.65), 0 0 8px rgba(124,218,255,0.35) inset;
+}
+
+.reels #spinToggle:checked ~ .confetti .piece {
+  opacity: 1;
+  animation: confetti-fall var(--dur) cubic-bezier(.25,.6,.2,1) var(--delay) 1 both,
+  confetti-rot var(--dur) linear var(--delay) 1 both;
+}
+
+/* Update message logic to show "You win!" on stop (remove #winToggle checks) */
+.reels #spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-spinning { opacity: 0; }
+.reels #spinToggle:checked ~ .win-line ~ .confetti ~ .message-bar .msg-win { opacity: 1; transform: translateY(0); }
+
+/* Optional: Hide the "Win Mode" toggle since it's no longer needed */
+.win-toggle { display: none; }
